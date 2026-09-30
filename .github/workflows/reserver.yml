@@ -1,0 +1,19 @@
+name: Reservation repas
+on:
+  schedule:
+    - cron: "5 22 * * *"
+  workflow_dispatch:
+
+jobs:
+  reserver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python reserver.py
+        env:
+          MW_USER: ${{ secrets.MW_USER }}
+          MW_PASS: ${{ secrets.MW_PASS }}
