@@ -58,10 +58,7 @@ print("Choix :", plat, p2, p3)
 menu = check(s.post(f"{API}/{resa}/menu", json={"id": 81, "quantity": 1}), "menu").json()["Id"]
 
 def ligne(j):
-    if isinstance(j, dict):
-        if j.get("ProductLines"):
-            return j["ProductLines"][-1]["Id"]
-        return j["Id"]
+    return j["line"]["ProductLines"][-1]["Id"]
 
 lignes = []
 for pid, comp, order in [(plat, "2", "1"), (p2, "5", "2"), (p3, "5", "3")]:
