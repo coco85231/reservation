@@ -1,19 +1,24 @@
 name: Reservation repas
 on:
-  schedule:
-    - cron: "5 22 * * *"
+  # Déclenché à 23h30 (Paris), du dimanche au jeudi, par cron-job.org via l'API GitHub.
+  # Pas de "schedule" : le cron intégré de GitHub peut avoir plusieurs heures de retard.
   workflow_dispatch:
+
+concurrency:
+  group: reservation
+  cancel-in-progress: false
 
 jobs:
   reserver:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install requests
-      - run: python reserver.py
+      - run: python -u reserver.py
         env:
           MW_USER: ${{ secrets.MW_USER }}
           MW_PASS: ${{ secrets.MW_PASS }}
